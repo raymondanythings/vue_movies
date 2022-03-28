@@ -1,22 +1,37 @@
 import { IMovie } from "./../utils/store.type";
 import { FETCH_START, FETCH_END } from "./mutations.type";
-import { IMovieStateProps } from "./../utils/store.type";
-import { FETCH_MOVIE_NOWPLAYING } from "./actions.type";
+import {
+  FETCH_MOVIE_NOWPLAYING,
+  FETCH_MOVIE_TOPRATED,
+  FETCH_MOVIE_UPCOMING,
+} from "./actions.type";
 import ApiService from "@/common/api.service";
-const state: IMovieStateProps = {
-  dates: {},
-  page: 0,
-  results: [],
-  total_pages: 0,
-  total_results: 0,
+
+interface IStateProps {
+  nowPlaying: IMovie[];
+  topRated: IMovie[];
+  upcoming: IMovie[];
+  isLoading: boolean;
+}
+
+const state: IStateProps = {
+  nowPlaying: [],
+  topRated: [],
+  upcoming: [],
   isLoading: true,
 };
 
 const getters = {
-  movies(state: IMovieStateProps) {
-    return state.results;
+  nowPlaying(state: IStateProps) {
+    return state.nowPlaying;
   },
-  isLoading(state: IMovieStateProps) {
+  topRated(state: IStateProps) {
+    return state.topRated;
+  },
+  upcoming(state: IStateProps) {
+    return state.upcoming;
+  },
+  isLoading(state: IStateProps) {
     return state.isLoading;
   },
 };
@@ -25,8 +40,29 @@ const actions = {
   async [FETCH_MOVIE_NOWPLAYING]({ commit }) {
     commit(FETCH_START);
     try {
+      const type = "nowPlaying";
       const movies = await ApiService.get("movie", "now_playing");
-      commit(FETCH_END, movies);
+      commit(FETCH_END, { movies, type });
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  },
+  async [FETCH_MOVIE_TOPRATED]({ commit }) {
+    commit(FETCH_START);
+    try {
+      const type = "topRated";
+      const movies = await ApiService.get("movie", "top_rated");
+      commit(FETCH_END, { movies, type });
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  },
+  async [FETCH_MOVIE_UPCOMING]({ commit }) {
+    commit(FETCH_START);
+    try {
+      const type = "upcoming";
+      const movies = await ApiService.get("movie", "upcoming");
+      commit(FETCH_END, { movies, type });
     } catch (error: any) {
       throw new Error(error);
     }
@@ -34,13 +70,15 @@ const actions = {
 };
 
 const mutations = {
-  [FETCH_START](state: IMovieStateProps) {
+  [FETCH_START](state: IStateProps) {
     state.isLoading = true;
   },
-  [FETCH_END](state: IMovieStateProps, movies: IMovie[]) {
+  [FETCH_END](
+    state: IStateProps,
+    { movies, type }: { movies: IMovie[]; type: string }
+  ) {
     state.isLoading = false;
-    console.log(movies);
-    state.results = movies;
+    state[type] = movies;
   },
 };
 

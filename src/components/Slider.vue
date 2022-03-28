@@ -1,8 +1,8 @@
 <template>
   <div id="slider">
-    <h1>Now Playing</h1>
+    <h1>{{ title }}</h1>
     <MovieInfo
-      v-for="movie in movies"
+      v-for="movie in getItems"
       :key="movie.id"
       :movie="movie"
     ></MovieInfo>
@@ -10,12 +10,33 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import MovieInfo from "../components/MovieInfo.vue";
 
 export default {
-  name: "Slider",
+  name: "SliderWrapper",
   components: {
     MovieInfo,
+  },
+  props: {
+    actionType: {},
+    title: {
+      type: String,
+      required: true,
+    },
+  },
+
+  // beforeMount() {
+  //   console.log(typeof this.actionType);
+  // },
+
+  mounted() {
+    this.$store.dispatch(this.actionType);
+  },
+  computed: {
+    getItems() {
+      return this.$store.getters[this.actionType];
+    },
   },
 };
 </script>

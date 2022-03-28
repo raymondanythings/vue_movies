@@ -7,17 +7,16 @@
 
 <script>
 import { makeImagePath } from "../utils/utils";
-
 export default {
   name: "MovieInfo",
-  methods: {
-    imgPath(url, format) {
-      return makeImagePath(url, format);
-    },
-  },
   props: {
     movie: {
       type: Object,
+    },
+  },
+  methods: {
+    imgPath(url, format) {
+      return makeImagePath(url, format);
     },
   },
 };
