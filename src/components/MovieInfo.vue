@@ -1,7 +1,9 @@
 <template>
-  <div>
-    <span>{{ movie.title }}</span>
-    <img :src="imgPath(movie.poster_path, 'w500')" alt="" />
+  <div class="wrapper" :style="imgPath(movie.poster_path, 'w500')">
+    <article>
+      <div>{{ movie.title }}</div>
+    </article>
+    <div style="width: 300px; height: 300px"></div>
   </div>
 </template>
 
@@ -16,10 +18,39 @@ export default {
   },
   methods: {
     imgPath(url, format) {
-      return makeImagePath(url, format);
+      return `background-image : url("${makeImagePath(url, format)}"`;
     },
   },
 };
 </script>
 
-<style></style>
+<style scoped lang="scss">
+.wrapper {
+  position: relative;
+  background-size: cover;
+  background-position: center center;
+  width: 300px;
+  height: 500px;
+  margin: 0 1rem;
+  border-radius: 1rem;
+  article {
+    position: absolute;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    bottom: 3%;
+    div {
+      color: white;
+      font-weight: 500;
+      font-size: 2rem;
+    }
+  }
+}
+
+img {
+  width: 150px;
+  border-radius: 1rem;
+}
+</style>

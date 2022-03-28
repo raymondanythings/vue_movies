@@ -2,7 +2,9 @@
   <header>
     <div class="header__wrapper">
       <div class="header__left">
-        <div class="logo">logo</div>
+        <button @click="this.$route.push({ path: '/' })" class="logo">
+          logo
+        </button>
         <div class="movie">Movie</div>
         <div class="tv">Tv</div>
       </div>
