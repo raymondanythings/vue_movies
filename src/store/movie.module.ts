@@ -1,80 +1,70 @@
-import { IMovie } from "./../utils/store.type";
-import { FETCH_START, FETCH_END } from "./mutations.type";
+import { IMovie, IMovieState } from "./../utils/store.type";
+import { FETCH_END } from "./mutations.type";
 import {
   FETCH_MOVIE_NOWPLAYING,
   FETCH_MOVIE_TOPRATED,
   FETCH_MOVIE_UPCOMING,
 } from "./actions.type";
 import ApiService from "@/common/api.service";
+import { splitActionType } from "@/utils/utils";
 
-interface IStateProps {
-  nowPlaying: IMovie[];
-  topRated: IMovie[];
-  upcoming: IMovie[];
-  isLoading: boolean;
-}
-
-const state: IStateProps = {
-  nowPlaying: [],
-  topRated: [],
-  upcoming: [],
-  isLoading: true,
+const state: IMovieState = {
+  nowPlayingMovie: [],
+  topRatedMovie: [],
+  upcomingMovie: [],
 };
 
 const getters = {
-  nowPlaying(state: IStateProps) {
-    return state.nowPlaying;
+  nowPlayingMovie(state: IMovieState) {
+    return state.nowPlayingMovie;
   },
-  topRated(state: IStateProps) {
-    return state.topRated;
+  topRatedMovie(state: IMovieState) {
+    return state.topRatedMovie;
   },
-  upcoming(state: IStateProps) {
-    return state.upcoming;
-  },
-  isLoading(state: IStateProps) {
-    return state.isLoading;
+  upcomingMovie(state: IMovieState) {
+    return state.upcomingMovie;
   },
 };
 
 const actions = {
   async [FETCH_MOVIE_NOWPLAYING]({ commit }) {
-    commit(FETCH_START);
+    // commit(FETCH_START);
     try {
-      const type = "nowPlaying";
-      const movies = await ApiService.get("movie", "now_playing");
+      const type = splitActionType(FETCH_MOVIE_NOWPLAYING, "Movie");
+      const movies = await ApiService.get(FETCH_MOVIE_NOWPLAYING);
       commit(FETCH_END, { movies, type });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (error) {
+      throw new Error(`${error}`);
     }
   },
   async [FETCH_MOVIE_TOPRATED]({ commit }) {
-    commit(FETCH_START);
+    // commit(FETCH_START);
     try {
-      const type = "topRated";
-      const movies = await ApiService.get("movie", "top_rated");
+      const type = splitActionType(FETCH_MOVIE_TOPRATED, "Movie");
+      const movies = await ApiService.get(FETCH_MOVIE_TOPRATED);
       commit(FETCH_END, { movies, type });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (error) {
+      throw new Error(`${error}`);
     }
   },
   async [FETCH_MOVIE_UPCOMING]({ commit }) {
-    commit(FETCH_START);
+    // commit(FETCH_START);
     try {
-      const type = "upcoming";
-      const movies = await ApiService.get("movie", "upcoming");
+      const type = splitActionType(FETCH_MOVIE_UPCOMING, "Movie");
+      const movies = await ApiService.get(FETCH_MOVIE_UPCOMING);
       commit(FETCH_END, { movies, type });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (error) {
+      throw new Error(`${error}`);
     }
   },
 };
 
 const mutations = {
-  [FETCH_START](state: IStateProps) {
-    state.isLoading = true;
-  },
+  // [FETCH_START](state: IMovieState) {
+  //   state.isLoading = true;
+  // },
   [FETCH_END](
-    state: IStateProps,
+    state: IMovieState,
     { movies, type }: { movies: IMovie[]; type: string }
   ) {
     state.isLoading = false;

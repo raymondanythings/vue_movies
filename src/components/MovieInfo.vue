@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper" :style="imgPath(movie.poster_path, 'w500')">
     <article>
-      <div>{{ movie.title }}</div>
+      <div>{{ movie.title || movie.original_name }}</div>
     </article>
     <div style="width: 300px; height: 300px"></div>
   </div>

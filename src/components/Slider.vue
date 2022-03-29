@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { makeGetterAction } from "@/utils/utils";
 import MovieInfo from "../components/MovieInfo.vue";
 
 export default {
@@ -27,16 +28,13 @@ export default {
     },
   },
 
-  // beforeMount() {
-  //   console.log(typeof this.actionType);
-  // },
-
   mounted() {
     this.$store.dispatch(this.actionType);
   },
   computed: {
     getItems() {
-      return this.$store.getters[this.actionType];
+      const type = makeGetterAction(this.actionType);
+      return this.$store.getters[type];
     },
   },
 };

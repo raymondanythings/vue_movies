@@ -2,11 +2,11 @@
   <header>
     <div class="header__wrapper">
       <div class="header__left">
-        <button @click="this.$route.push({ path: '/' })" class="logo">
+        <button @click="this.$router.push({ path: '/' })" class="logo">
           logo
         </button>
-        <div class="movie">Movie</div>
-        <div class="tv">Tv</div>
+        <div @click="this.$router.push({ path: '/' })" class="movie">Movie</div>
+        <div @click="this.$router.push({ path: '/tv' })" class="tv">Tv</div>
       </div>
       <div class="header__right"></div>
     </div>

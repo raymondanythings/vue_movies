@@ -1,9 +1,6 @@
 <template>
   <footer>
     <div class="container">
-      <router-link class="logo-font" :to="{ path: 'HomePage' }">
-        <!-- conduit -->
-      </router-link>
       <span class="attribution">
         &copy; An interactive learning project from Code &amp; design licensed
         under MIT.
